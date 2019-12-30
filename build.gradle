@@ -1,0 +1,52 @@
+/**
+ * Copyright (C) 2019 thinh ho
+ * This file is part of 'poja-doc' which is released under the MIT license.
+ * See LICENSE at the project root directory.
+ */
+
+buildscript {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+        maven {
+            url 'https://github.com/kkdt/mavenrepo/raw/master'
+        }
+    }
+}
+
+description = 'Plain Old Java API (POJA) Documentation'
+
+subprojects {
+    version = '0.1'
+    group = 'poja'
+
+    apply plugin: 'java-library'
+    apply plugin: 'maven-publish'
+
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+            }
+        }
+    }
+
+    jar {
+        manifest {
+            attributes(
+                "Name": rootProject.name,
+                "Specification-Title": "${project.name} kkdt",
+                "Specification-Version": rootProject.version,
+                "Specification-Vendor": "kkdt",
+                "Implementation-Title": rootProject.name,
+                "Implementation-Version": rootProject.version,
+                "Implementation-Vendor": "me@kkdt.one"
+            )
+        }
+    }
+}

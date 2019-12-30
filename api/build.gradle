@@ -1,0 +1,37 @@
+/*
+ * Copyright (c) 2019. thinh ho
+ * This file is part of 'api' which is released under the MIT license.
+ * See LICENSE at the project root directory.
+ */
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'poja:poja-gradle-plugin:0.1'
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'pojadoc'
+
+description = 'poja standalone project'
+
+poja {
+    builderType = 'poja.core.DefaultDocumentBuilder'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'poja:poja-core:0.1'
+}
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-web:2.0.9.RELEASE")
+}

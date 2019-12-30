@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2019. thinh ho
+ * This file is part of 'poja-gradle-plugin' which is released under the MIT license.
+ * See LICENSE at the project root directory.
+ */
+
+plugins {
+    id 'groovy'
+}
+
+description = 'POJA Gradle Plugin'
+
+dependencies {
+    compile gradleApi()
+    compile 'poja:poja-core:0.1'
+}
