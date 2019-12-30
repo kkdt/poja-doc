@@ -51,3 +51,35 @@ gradle -b api/build.gradle :clean :pojadoc
 # outputs the sample API
 cat api/build/pojadoc/poja.json
 ```
+
+# Sample Ouptput
+
+```json
+{
+    "value": "/poja",
+    "description": "POJA Annotation Test Endpoint",
+    "operations": [
+        {
+            "consumes": null,
+            "produces": null,
+            "description": "",
+            "methods": [
+                "POST"
+            ],
+            "path": "/submit"
+        },
+        {
+            "consumes": null,
+            "produces": [
+                "test/plain"
+            ],
+            "description": "",
+            "methods": [
+                "GET"
+            ],
+            "path": "/info"
+        }
+    ],
+    "name": "poja"
+}
+```
