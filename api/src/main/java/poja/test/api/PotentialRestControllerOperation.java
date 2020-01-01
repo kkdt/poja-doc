@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Scenario with a single potential operation.
+ */
 public class PotentialRestControllerOperation {
 
     @RequestMapping(value = "/potential/info", method = { RequestMethod.GET }, produces = { "test/plain" })

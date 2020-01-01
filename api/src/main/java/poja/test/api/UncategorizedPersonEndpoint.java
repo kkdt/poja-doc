@@ -14,6 +14,9 @@ import poja.core.annotation.Api;
 import poja.core.annotation.ApiOperation;
 import poja.core.annotation.ApiParam;
 
+/**
+ * Scenario where only there is only a single operation that is documented.
+ */
 @RestController
 public class UncategorizedPersonEndpoint {
 

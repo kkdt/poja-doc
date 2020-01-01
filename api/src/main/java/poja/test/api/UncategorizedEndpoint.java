@@ -14,6 +14,9 @@ import poja.core.annotation.Api;
 import poja.core.annotation.ApiOperation;
 import poja.core.annotation.ApiParam;
 
+/**
+ * Scenario where only operations are documented.
+ */
 @RestController
 public class UncategorizedEndpoint {
 
@@ -22,6 +25,15 @@ public class UncategorizedEndpoint {
     })
     @RequestMapping(value = "/submit/{userid}", method = { RequestMethod.POST })
     public void submit(@RequestParam String userid) {
+        // do something
+    }
+
+    @ApiOperation(path = "/submit/{userid}/{ssn}", methods = { "POST" }, url = "http://javadoc/poja-sumbit.html", parameters = {
+        @ApiParam(name = "userid", location = "url", required = true),
+        @ApiParam(name = "ssn", location = "url", required = true)
+    })
+    @RequestMapping(value = "/submit/{userid}/{ssn}", method = { RequestMethod.POST })
+    public void updateSocial(@RequestParam String userid, @RequestParam String ssn) {
         // do something
     }
 }

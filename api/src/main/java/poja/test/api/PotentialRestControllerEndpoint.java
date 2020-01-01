@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Scneario with potential class- and method-level annotations that indicate this class is an API.
+ */
 @RestController
 public class PotentialRestControllerEndpoint {
 

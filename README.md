@@ -1,15 +1,28 @@
 # poja-doc
 
-> Existing frameworks such as [Swagger](https://swagger.io/) and [APIDOC](https://apidocjs.com/) provide much more features and overall a lot more sophisticated. This project aims to simplify API documentation to meet specific and opinionated goals and use cases. 
+> Existing frameworks such as [Swagger](https://swagger.io/) and [APIDOC](https://apidocjs.com/) provide much more features and overall a lot more sophisticated. This project aims to simplify API documentation to meet specific and opinionated goals and use cases - mainly for internal APIs. 
 
 # Overview
 
 Plain Old Java API (POJA) Documentation is a simplified (and opinionated) approach to documenting Java-based APIs. The primary goal is to provide a "vanilla Java" library and Gradle Plugin for developers to document their APIs outside of Javadoc without any overhead of additional COTs dependencies.
 
-It provides a set of annotations similar to [Swagger](https://swagger.io/) but only adopts relevant attributes for intended use cases. The core logic uses reflection to detect these annotations from post-compiled classes and generate output file(s). Other processing can be extended via the `PojaDocumentation` interface specifications and can be configured via the Gradle `pojadoc` task.
+It provides a set of annotations similar to [Swagger](http://docs.swagger.io/swagger-core/v1.5.0/apidocs/io/swagger/annotations/package-summary.html) but only adopts relevant attributes for intended use cases. The core logic uses reflection to detect these annotations from post-compiled classes and generate output API doumentations in json format. Other formats and documentation logic can be extended via the `PojaDocumentation` interface specifications and can be configured via the Gradle `pojadoc` task.
 
 ```groovy
 // build.gradle
+
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'poja:poja-gradle-plugin:0.2'
+    }
+}
+
+apply plugin: 'java-library'
+apply plugin: 'pojadoc'
 
 pojadoc {
     // default if not set; otherwise, your own custom PojaDocumentation implementation
@@ -21,7 +34,9 @@ pojadoc {
     // default output pojadoc output directory, if not set
     docOutputDir = "${project.buildDir}/pojadoc"
 }
-```  
+```
+
+Documenting API implementations involves two annotations `@Api` and `@ApiOperation`. Unlike Swagger, documentation details are all captured within each annotation and not outside, i.e. within implementation methods, method parameters, method body, etc.
 
 ## Documenting Root Endpoint
 
@@ -49,7 +64,7 @@ Annotation `@ApiOperation`
 3. produces: String[] Allowable formats this operation supports
 4. methods: String[] HTTP methods that this operation supports
 5. url: Additional details can be externally linked.
-6. parameters: ApiParam[] Parameters into this operation includes url parameters, request body, header attributes.
+6. parameters: ApiParam[] Parameters into this operation includes url parameters, request body, header attributes
 ```
 
 Example
@@ -93,7 +108,7 @@ gradle -b api/build.gradle :clean :pojadoc
 cat api/build/pojadoc/poja.json
 ```
 
-# Ouptput
+# Output
 
 There will be 3 different types of outputs if using the default `documentationType` -
 
@@ -242,6 +257,32 @@ Sample uncategorized operations
                             "url": "",
                             "location": "url",
                             "name": "userid"
+                        },
+                        {
+                            "required": true,
+                            "type": "java.lang.String",
+                            "url": "",
+                            "location": "url",
+                            "name": "ssn"
+                        }
+                    ],
+                    "consumes": null,
+                    "produces": null,
+                    "description": "",
+                    "methods": [
+                        "POST"
+                    ],
+                    "url": "http://javadoc/poja-sumbit.html",
+                    "path": "/submit/{userid}/{ssn}"
+                },
+                {
+                    "parameters": [
+                        {
+                            "required": true,
+                            "type": "java.lang.String",
+                            "url": "",
+                            "location": "url",
+                            "name": "userid"
                         }
                     ],
                     "consumes": null,
@@ -259,3 +300,9 @@ Sample uncategorized operations
     }
 ]
 ```
+
+# Resources
+
+1. Example showing how to integrate Spring Boot and Swagger - [here](https://dzone.com/articles/spring-boot-2-restful-api-documentation-with-swagg)
+
+2. Swagger annotation package - [here](http://docs.swagger.io/swagger-core/v1.5.0/apidocs/io/swagger/annotations/package-summary.html)
