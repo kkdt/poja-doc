@@ -18,7 +18,31 @@ import java.lang.annotation.Target;
 @Inherited
 @Documented
 public @interface Api {
+    /**
+     * API name/identifier.
+     *
+     * @return
+     */
     String name();
+
+    /**
+     * The API root path value.
+     *
+     * @return
+     */
     String value();
+
+    /**
+     * Additional details can be externally linked.
+     *
+     * @return
+     */
+    String url() default "";
+
+    /**
+     * Short API description.
+     *
+     * @return
+     */
     String description() default "";
 }

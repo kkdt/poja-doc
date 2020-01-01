@@ -17,7 +17,7 @@ buildscript {
 description = 'Plain Old Java API (POJA) Documentation'
 
 subprojects {
-    version = '0.1'
+    version = '0.2'
     group = 'poja'
 
     apply plugin: 'java-library'

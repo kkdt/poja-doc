@@ -11,14 +11,12 @@ import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.SourceSetContainer
-import poja.core.DefaultDocumentBuilder
+import poja.core.DefaultDocumentation
 
 class PojaDocPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        PojaExtension poja = project.getExtensions().create("poja", PojaExtension.class, project)
-
 //        project.afterEvaluate {
 //
 //        }
@@ -28,11 +26,10 @@ class PojaDocPlugin implements Plugin<Project> {
             SourceSetContainer sourceSetContainer = convention.getSourceSets()
 
             project.tasks.create("pojadoc", PojaDocTask.class, {
-                def builderType = poja.builderType.get();
-                if(!builderType) builderType = DefaultDocumentBuilder.class.getName()
-
                 it.sourceSetContainer = sourceSetContainer
-                it.builderType = builderType
+                it.builderType = DefaultDocumentation.class.name
+                it.docOutputDir = "${project.buildDir}/pojadoc"
+                it.potentialImplementations = ['javax.ws.rs', 'org.springframework.web.bind.annotation'] as Set
                 it.description = "Generates POJA Documentation."
                 it.setGroup("Documentation")
                 it.dependsOn(sourceSetContainer.main.getOutput().getDirs())

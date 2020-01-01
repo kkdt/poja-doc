@@ -16,9 +16,52 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ApiOperation {
+    /**
+     * Operation full path.
+     *
+     * @return
+     */
     String path();
+
+    /**
+     * Short description.
+     *
+     * @return
+     */
     String description() default "";
+
+    /**
+     * All formats this operation will produce.
+     *
+     * @return
+     */
     String[] produces() default {};
+
+    /**
+     * Allowable formats this operation supports.
+     *
+     * @return
+     */
     String[] consumes() default {};
+
+    /**
+     * HTTP methods that this operation supports.
+     *
+     * @return
+     */
     String[] methods() default {};
+
+    /**
+     * Additional details can be externally linked.
+     *
+     * @return
+     */
+    String url() default "";
+
+    /**
+     * Parameters into this operation includes url parameters, request body, header attributes.
+     *
+     * @return
+     */
+    ApiParam[] parameters() default {};
 }

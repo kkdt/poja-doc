@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import poja.core.annotation.Api;
 import poja.core.annotation.ApiOperation;
+import poja.core.annotation.ApiParam;
 
 @RestController
 @Api(name = "poja", value = "/poja", description = "POJA Annotation Test Endpoint")
@@ -22,9 +23,11 @@ public class PojaEndpoint {
         return "poja endpoint";
     }
 
-    @ApiOperation(path = "/submit", methods = { "POST" } )
+    @ApiOperation(path = "/submit", methods = { "POST" }, url = "http://javadoc/poja-sumbit.html", parameters = {
+       @ApiParam(name = "model", location = "body", type = PojaModel.class, url  = "http://javadoc/model/PojaModel.html")
+    })
     @RequestMapping(value = "/submit", method = { RequestMethod.POST })
-    public void submit() {
+    public void submit(PojaModel model) {
         // do something
     }
 }
