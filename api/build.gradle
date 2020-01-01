@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'poja:poja-gradle-plugin:0.1'
+        classpath 'poja:poja-gradle-plugin:0.2'
     }
 }
 
@@ -19,9 +19,9 @@ apply plugin: 'pojadoc'
 
 description = 'poja standalone project'
 
-poja {
-    builderType = 'poja.core.DefaultDocumentBuilder'
-}
+//pojadoc {
+//    docOutputDir = file('../pojadoc')
+//}
 
 repositories {
     mavenLocal()
@@ -29,9 +29,12 @@ repositories {
 }
 
 dependencies {
-    compile 'poja:poja-core:0.1'
+    compile 'poja:poja-core:0.2'
 }
 
 dependencies {
     compile("org.springframework.boot:spring-boot-starter-web:2.0.9.RELEASE")
+    // https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api
+    compile group: 'javax.ws.rs', name: 'javax.ws.rs-api', version: '2.0'
+
 }

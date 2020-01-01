@@ -6,19 +6,23 @@
 
 package poja.gradle.plugin
 
-import poja.core.ApiBuilder
+import poja.core.ApiDetails
 
 class Api {
     String name
     String value
     String description
     Set<ApiOperation> operations
+    String url
+    String type
 
-    Api of(ApiBuilder builder) {
-        name = builder.name()
-        value = builder.value()
-        description = builder.description()
+    Api of(ApiDetails details) {
+        name = details.name()
+        value = details.value()
+        description = details.description()
         operations = new HashSet<>()
+        url = details.url()
+        type = details.type()
         return this
     }
 }

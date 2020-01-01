@@ -7,42 +7,64 @@
 package poja.core;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class ApiOperationBuilder {
+public class ApiOperationDetails {
     private String api;
     private String path;
     private String description;
     private Set<String> consumes;
     private Set<String> produces;
     private Set<String> methods;
+    private String url;
+    private List<ApiParamDetails> parameters;
 
-    public ApiOperationBuilder(String path) {
+    public ApiOperationDetails parameters(List<ApiParamDetails> parameters) {
+        this.parameters = parameters;
+        return this;
+    }
+
+    public List<ApiParamDetails> parameters() {
+        return parameters;
+    }
+
+    public ApiOperationDetails url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public String url() {
+        return Optional.ofNullable(url)
+            .orElse("");
+    }
+
+    public ApiOperationDetails(String path) {
         this.path = path;
     }
 
-    public ApiOperationBuilder api(String api) {
+    public ApiOperationDetails api(String api) {
         this.api = api;
         return this;
     }
 
-    public ApiOperationBuilder description(String description) {
+    public ApiOperationDetails description(String description) {
         this.description = description;
         return this;
     }
 
-    public ApiOperationBuilder consumes(Set<String> consumes) {
+    public ApiOperationDetails consumes(Set<String> consumes) {
         this.consumes = consumes;
         return this;
     }
 
-    public ApiOperationBuilder produces(Set<String> produces) {
+    public ApiOperationDetails produces(Set<String> produces) {
         this.produces = produces;
         return this;
     }
 
-    public ApiOperationBuilder methods(Set<String> methods) {
+    public ApiOperationDetails methods(Set<String> methods) {
         this.methods = methods;
         return this;
     }

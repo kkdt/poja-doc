@@ -6,7 +6,7 @@
 
 package poja.gradle.plugin
 
-import poja.core.ApiOperationBuilder
+import poja.core.ApiOperationDetails
 
 class ApiOperation {
     String path
@@ -14,13 +14,30 @@ class ApiOperation {
     Set<String> consumes
     Set<String> produces
     Set<String> methods
+    String url
+    List<ApiParam> parameters = new ArrayList()
 
-    ApiOperation of(ApiOperationBuilder builder) {
-        this.path = builder.path()
-        this.description = builder.description()
-        this.consumes = builder.consumes().size() > 0 ? builder.consumes() : null
-        this.produces = builder.produces().size() > 0 ? builder.produces() : null
-        this.methods = builder.methods().size() > 0 ? builder.methods() : null
+    ApiOperation of(ApiOperationDetails details) {
+        this.path = details.path()
+        this.description = details.description()
+        this.consumes = details.consumes().size() > 0 ? details.consumes() : null
+        this.produces = details.produces().size() > 0 ? details.produces() : null
+        this.methods = details.methods().size() > 0 ? details.methods() : null
+        this.url = details.url()
+        if(details.parameters().size() > 0) {
+            System.out.println(String.format("details.parameters() - %s", details.parameters().size()))
+            details.parameters().eachWithIndex { it, i ->
+                ApiParam a = new ApiParam()
+                a.name = it.name()
+                a.url = it.url()
+                a.location = it.location()
+                a.required = it.required()
+                a.type = it.type().name
+                System.out.println(String.format("parameter[%s], %s", i, a.class.name))
+                this.parameters.add(a)
+            }
+        }
+
         return this
     }
 }

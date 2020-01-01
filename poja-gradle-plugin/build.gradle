@@ -12,5 +12,5 @@ description = 'POJA Gradle Plugin'
 
 dependencies {
     compile gradleApi()
-    compile 'poja:poja-core:0.1'
+    compile project(':poja-core')
 }

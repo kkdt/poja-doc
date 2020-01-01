@@ -8,22 +8,33 @@ package poja.gradle.plugin
 
 import groovy.json.JsonOutput
 import org.gradle.api.DefaultTask
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskAction
-import poja.core.ApiBuilder
-import poja.core.PojaDocumentBuilder
+import poja.core.ApiDetails
+import poja.core.PojaDocumentation
 
 class PojaDocTask extends DefaultTask {
 
     SourceSetContainer sourceSetContainer
+
+    @Input
     String builderType
 
+    @Input
+    def potentialImplementations
+
     @OutputDirectory
-    File outputDirectory = project.file("${project.buildDir}/pojadoc")
+    def docOutputDir
 
     @TaskAction
     def pojadoc() {
+        logger.info("PojaDocTask.docOutputDir = ${docOutputDir}")
+        logger.info("PojaDocTask.builderType = ${builderType}")
+        logger.info("PojaDocTask.potentialImplementations = ${potentialImplementations}")
+
+
         def jars = jars(sourceSetContainer)
         def classes = classes(sourceSetContainer)
         def loader = new URLClassLoader(jars.collect { it.toURI().toURL() } as URL[])
@@ -32,12 +43,11 @@ class PojaDocTask extends DefaultTask {
         } as Set
 
         def apis = builders.stream()
-            .filter { it.api() != null }
+            .filter { it.api() != null && !(it.api().name().equals("undocumented") || it.api().name().equals("uncategorized"))}
             .collect { it.api() } as Set
-        apis << ApiBuilder.UncatApi
 
         def operations = (builders.stream()
-            .filter { it.operations().size() > 0 }
+            .filter { !"uncategorized".equals(it.api().name) && it.operations().size() > 0 }
             .collect { it.operations() } as Set).flatten()
 
         def apimap = apis.collectEntries {
@@ -49,18 +59,37 @@ class PojaDocTask extends DefaultTask {
         }
 
         apimap.each {
-            def f = new File("" + outputDirectory.absolutePath
-                + File.separator
-                + it.key + ".json")
+            def f = new File(docOutputDir, "" +  it.key + ".json")
             logger.info("File {}", f)
             f.write(JsonOutput.prettyPrint(JsonOutput.toJson(it.value)))
         }
 
+        def uncategorized = builders.stream()
+            .filter { "uncategorized".equals(it.api().name) && it.operations().size() > 0 }
+            .collect {
+                def a = new Api().of(it.api())
+                a.operations << it.operations().collect {
+                    new ApiOperation().of(it)
+                }
+                a
+
+            } as List
+        def uncatfile = new File(docOutputDir, "uncategorized.json")
+        logger.info("Uncategorized {}", uncatfile)
+        uncatfile.write(JsonOutput.prettyPrint(JsonOutput.toJson(uncategorized)))
+
+        def undocumented = builders.stream()
+            .filter { it.undocumented() }
+            .collect { it.api() }
+            .collect { new Api().of(it) } as List
+        def undocfile = new File(docOutputDir, "undocumented.json")
+        logger.info("Undocumented {}", undocfile)
+        undocfile.write(JsonOutput.prettyPrint(JsonOutput.toJson(undocumented)))
     }
 
     def process(Class<?> clazz) {
-        PojaDocumentBuilder builder = (PojaDocumentBuilder)Class.forName(builderType).newInstance()
-        builder.process(clazz)
+        PojaDocumentation builder = (PojaDocumentation)Class.forName(builderType).newInstance()
+        builder.process(clazz, potentialImplementations)
         logger.info("{}, API: {}, Operation count: {}", clazz, builder.api(), builder.operations().size())
         builder
     }
