@@ -52,7 +52,7 @@ public @interface ApiOperation {
     String[] methods() default {};
 
     /**
-     * Additional details can be externally linked.
+     * Additional details can be externally linked (i.e. to javadoc, confluence, etc).
      *
      * @return
      */

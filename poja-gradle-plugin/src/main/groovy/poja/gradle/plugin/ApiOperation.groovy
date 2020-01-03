@@ -17,7 +17,7 @@ class ApiOperation {
     String url
     List<ApiParam> parameters = new ArrayList()
 
-    ApiOperation of(ApiOperationDetails details) {
+    ApiOperation(ApiOperationDetails details) {
         this.path = details.path()
         this.description = details.description()
         this.consumes = details.consumes().size() > 0 ? details.consumes() : null
@@ -25,7 +25,6 @@ class ApiOperation {
         this.methods = details.methods().size() > 0 ? details.methods() : null
         this.url = details.url()
         if(details.parameters().size() > 0) {
-            System.out.println(String.format("details.parameters() - %s", details.parameters().size()))
             details.parameters().eachWithIndex { it, i ->
                 ApiParam a = new ApiParam()
                 a.name = it.name()
@@ -33,11 +32,8 @@ class ApiOperation {
                 a.location = it.location()
                 a.required = it.required()
                 a.type = it.type().name
-                System.out.println(String.format("parameter[%s], %s", i, a.class.name))
                 this.parameters.add(a)
             }
         }
-
-        return this
     }
 }

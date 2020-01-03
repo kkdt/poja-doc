@@ -33,7 +33,7 @@ public @interface Api {
     String value();
 
     /**
-     * Additional details can be externally linked.
+     * Additional details can be externally linked (i.e. to javadoc, confluence, etc).
      *
      * @return
      */
