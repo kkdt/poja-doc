@@ -16,13 +16,12 @@ class Api {
     String url
     String type
 
-    Api of(ApiDetails details) {
+    Api(ApiDetails details) {
         name = details.name()
         value = details.value()
         description = details.description()
         operations = new HashSet<>()
         url = details.url()
         type = details.type()
-        return this
     }
 }

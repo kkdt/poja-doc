@@ -6,7 +6,7 @@
 
 Plain Old Java API (POJA) Documentation is a simplified (and opinionated) approach to documenting Java-based APIs. The primary goal is to provide a "vanilla Java" library and Gradle Plugin for developers to document their APIs outside of Javadoc without any overhead of additional COTs dependencies.
 
-It provides a set of annotations similar to [Swagger](http://docs.swagger.io/swagger-core/v1.5.0/apidocs/io/swagger/annotations/package-summary.html) but only adopts relevant attributes for intended use cases. The core logic uses reflection to detect these annotations from post-compiled classes and generate output API doumentations in json format. Other formats and documentation logic can be extended via the `PojaDocumentation` interface specifications and can be configured via the Gradle `pojadoc` task.
+It provides a set of annotations similar to [Swagger](http://docs.swagger.io/swagger-core/v1.5.0/apidocs/io/swagger/annotations/package-summary.html) but only adopts relevant attributes for intended use cases. The core logic uses reflection to detect these annotations from compiled classes and generate output API doumentations in json format. Other formats and documentation logic can be extended via the `PojaDocumentation` interface specifications and can be configured via the Gradle `pojadoc` task.
 
 ```groovy
 // build.gradle
@@ -26,13 +26,16 @@ apply plugin: 'pojadoc'
 
 pojadoc {
     // default if not set; otherwise, your own custom PojaDocumentation implementation
-    builderType = 'poja.core.DefaultDocumentation'
+    documentationType = 'poja.core.DefaultDocumentation'
     
     // default potential implementations to look for, if not set
     potentialImplementations = ['javax.ws.rs', 'org.springframework.web.bind.annotation']
     
     // default output pojadoc output directory, if not set
     docOutputDir = "${project.buildDir}/pojadoc"
+    
+    // default if not set; any class that cannot be processed through reflection due to dependencies issues will be ignored
+    ignoreNoClassDefFoundError = true
 }
 ```
 
@@ -45,7 +48,7 @@ Annotation `@Api`
 1. name: API name/identifier
 2. description: Short description
 3. value: The API root path value
-3. url: Additional details can be externally linked.
+3. url: Additional details can be externally linked (i.e. to javadoc, confluence, etc)
 ```
 
 Example
@@ -63,7 +66,7 @@ Annotation `@ApiOperation`
 2. description: Short description
 3. produces: String[] Allowable formats this operation supports
 4. methods: String[] HTTP methods that this operation supports
-5. url: Additional details can be externally linked.
+5. url: Additional details can be externally linked (i.e. to javadoc, confluence, etc)
 6. parameters: ApiParam[] Parameters into this operation includes url parameters, request body, header attributes
 ```
 
@@ -82,7 +85,7 @@ Annotation `@ApiParam`, parameters to an API operation can be located in the URL
 2. description: Short description
 3. location: url, body, header attribute
 4. type: Paramter class type, default to String
-5. url: Additional details can be externally linked.
+5. url: Additional details can be externally linked (i.e. to javadoc, confluence, etc)
 6. required: Required for operation
 ```
 

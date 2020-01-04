@@ -34,6 +34,7 @@ public class DefaultDocumentation implements PojaDocumentation {
 
         // do not process if undocumented
         if(checkPotentialUndocumented(clazz, interested)) {
+            System.out.println(String.format("Potential API: %s", clazz.getCanonicalName()));
             this.api = new ApiDetails()
                 .value("undocumented")
                 .name("undocumented")
@@ -52,7 +53,9 @@ public class DefaultDocumentation implements PojaDocumentation {
                 .value("uncategorized")
                 .name("uncategorized")
                 .description("Uncategorized API: " + clazz.getCanonicalName()));
-        operations.forEach(o -> o.api(api.name()));
+        if(operations.size() > 0) {
+            operations.forEach(o -> o.api(api.name()));
+        }
     }
 
     @Override
@@ -93,12 +96,12 @@ public class DefaultDocumentation implements PojaDocumentation {
         );
 
         // no api annotations but has potential class- and method-level annotations
-        System.out.println(String.format("%s - hasApiAnnotation: %s, hasApiOperationAnnotations: %s, classInterested: %s, methodsInterested: %s",
-            clazz.getCanonicalName(),
-            hasApiAnnotation(clazz),
-            hasApiOperationAnnotations(clazz),
-            classInterested,
-            methodsInterested));
+//        System.out.println(String.format("%s - hasApiAnnotation: %s, hasApiOperationAnnotations: %s, classInterested: %s, methodsInterested: %s",
+//            clazz.getCanonicalName(),
+//            hasApiAnnotation(clazz),
+//            hasApiOperationAnnotations(clazz),
+//            classInterested,
+//            methodsInterested));
         return !hasApiAnnotation(clazz) && !hasApiOperationAnnotations(clazz) && (classInterested || methodsInterested);
     }
 

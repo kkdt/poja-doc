@@ -27,7 +27,7 @@ class PojaDocPlugin implements Plugin<Project> {
 
             project.tasks.create("pojadoc", PojaDocTask.class, {
                 it.sourceSetContainer = sourceSetContainer
-                it.builderType = DefaultDocumentation.class.name
+                it.documentationType = DefaultDocumentation.class.name
                 it.docOutputDir = "${project.buildDir}/pojadoc"
                 it.potentialImplementations = ['javax.ws.rs', 'org.springframework.web.bind.annotation'] as Set
                 it.description = "Generates POJA Documentation."

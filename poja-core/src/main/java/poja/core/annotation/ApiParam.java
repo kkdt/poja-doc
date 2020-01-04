@@ -38,11 +38,16 @@ public @interface ApiParam {
     Class<?> type() default String.class;
 
     /**
-     * Additional details on the input model.
+     * Additional details on the input model (i.e. to javadoc, confluence, etc).
      *
      * @return
      */
     String url() default "";
 
+    /**
+     * Default parameter will be required.
+     *
+     * @return
+     */
     boolean required() default true;
 }

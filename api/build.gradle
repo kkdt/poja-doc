@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'poja:poja-gradle-plugin:0.2'
+        classpath 'poja:poja-gradle-plugin:0.3'
     }
 }
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    compile 'poja:poja-core:0.2'
+    compile 'poja:poja-core:0.3'
 }
 
 dependencies {
